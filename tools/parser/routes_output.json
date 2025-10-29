@@ -1,0 +1,32 @@
+{
+    "routes": [
+        {
+            "name": "get_order",
+            "method": "GET",
+            "path": "/order",
+            "middleware": [],
+            "handler": "(req, res"
+        },
+        {
+            "name": "send_Get order",
+            "method": "SEND",
+            "path": "Get order",
+            "middleware": [],
+            "handler": ""
+        },
+        {
+            "name": "log_Server running on port $_process.env.PORT || 3000",
+            "method": "LOG",
+            "path": "Server running on port ${process.env.PORT || 3000}",
+            "middleware": [],
+            "handler": ""
+        }
+    ],
+    "middleware": [
+        "express.json("
+    ],
+    "metadata": {
+        "file_path": "E:\\Kuliahan\\skripsi\\HelioVerify\\data\\dummy_microservices\\routes.js",
+        "total_routes": 3
+    }
+}

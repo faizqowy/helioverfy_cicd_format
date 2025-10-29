@@ -1,0 +1,52 @@
+{
+    "services": {
+        "ItemsService": {
+            "port": 8000,
+            "file_path": "..\\..\\data\\dummy_microservices\\items.py",
+            "framework": "FastAPI",
+            "routes": [
+                {
+                    "name": "get_root",
+                    "method": "GET",
+                    "path": "/",
+                    "middleware": [],
+                    "handler": "read_root"
+                },
+                {
+                    "name": "get_items_item_id",
+                    "method": "GET",
+                    "path": "/items/{item_id}",
+                    "middleware": [],
+                    "handler": "read_item"
+                }
+            ]
+        },
+        "ProductsService": {
+            "port": 3000,
+            "file_path": "..\\..\\data\\dummy_microservices\\products.js",
+            "framework": "Express.js",
+            "routes": [
+                {
+                    "name": "post_products",
+                    "method": "POST",
+                    "path": "/products",
+                    "middleware": [
+                        "authMiddleware"
+                    ],
+                    "handler": "(req, res) => { console.log('Creating a new product'"
+                },
+                {
+                    "name": "get_products_id",
+                    "method": "GET",
+                    "path": "/products/:id",
+                    "middleware": [],
+                    "handler": "(req, res) => { res.send(`Product with ID ${req.params.id}`"
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "total_services": 2,
+        "total_routes": 6
+    }
+}

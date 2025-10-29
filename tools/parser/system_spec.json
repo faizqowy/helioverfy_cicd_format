@@ -1,0 +1,52 @@
+{
+    "services": {
+        "ProductsService": {
+            "routes": {
+                "getProducts": {
+                    "method": "GET",
+                    "path": "/products"
+                },
+                "createProduct": {
+                    "method": "POST",
+                    "path": "/products"
+                },
+                "getProductById": {
+                    "method": "GET",
+                    "path": "/products/{id}"
+                }
+            }
+        },
+        "ItemsService": {
+            "routes": {
+                "getRoot": {
+                    "method": "GET",
+                    "path": "/"
+                },
+                "getItemById": {
+                    "method": "GET",
+                    "path": "/items/{item_id}"
+                },
+                "createItem": {
+                    "method": "POST",
+                    "path": "/items/"
+                }
+            }
+        }
+    },
+    "communications": [
+        {
+            "source": "item-service",
+            "target": "product-service",
+            "type": "sync"
+        }
+    ],
+    "policies": {
+        "authRequired": [
+            "createProduct",
+            "createItem"
+        ]
+    },
+    "properties": [
+        "always (item-service -> eventually product-service)"
+    ]
+}
