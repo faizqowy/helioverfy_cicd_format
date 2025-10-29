@@ -24,24 +24,24 @@ app.get('/users', authMiddleware, (req, res) => {
   res.json([{ id: 1, name: 'Test User' }]);
 });
 
-// Case 2: "POLICY VIOLATION" (This should FAIL the CI build)
+// Case 2: "FIXED" (Was the Policy Violation)
 // Spec: POST /users (operationId: createUser)
-// Impl: Is missing auth! Your solver should detect this policy violation.
-app.post('/users', (req, res) => {
+// Impl: NOW includes the 'authMiddleware', satisfying the policy.
+app.post('/users', authMiddleware, (req, res) => {
   res.status(201).send('User created');
 });
 
-// Case 3: "HEURISTIC WARNING"
-// Spec: (Not defined)
-// Impl: DELETE /users/:id (missing auth)
-// Your SecurityAnalyzer should flag this as a warning.
-app.delete('/users/:id', (req, res) => {
-  res.send('User deleted');
+// Case 3: "FIXED" (Was the Missing Implementation)
+// Spec: GET /users/{id} (operationId: getUserById) is defined in openapi.yml
+// Impl: This route is now implemented.
+app.get('/users/:id', authMiddleware, (req, res) => {
+  res.json({ id: req.params.id, name: 'Specific User' });
 });
 
-// Case 4: "MISSING IMPLEMENTATION"
-// Spec: GET /users/{id} (operationId: getUserById) is defined in openapi.yml
-// Impl: This route is not implemented here. Your solver should create a suggestion.
+// Case 4: "REMOVED" (Was the Security Warning)
+// The DELETE /users/:id route was not in the spec, so it has been
+// removed to make the implementation match the spec perfectly.
+// app.delete('/users/:id', (req, res) => { ... });
 
 app.listen(port, () => {
   console.log(`User-Service listening on port ${port}`);
