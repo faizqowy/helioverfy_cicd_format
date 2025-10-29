@@ -1,0 +1,18 @@
+# Save as: docker-compose.yml
+version: '3.8'
+
+services:
+  user-service:
+    image: user-service-img
+    ports:
+      - "3000:3000"
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    # This dependency will be parsed by your tool
+    depends_on:
+      - auth-service
+      
+  auth-service:
+    image: auth-service-img
+    ports:
+      - "3001:3001"

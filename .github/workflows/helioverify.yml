@@ -1,0 +1,44 @@
+name: "HelioVerify Architecture Check"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: "Install dependencies"
+        run: |
+          pip install z3-solver pyyaml
+
+      - name: "Step 1: Parse Routes from Source"
+        run: |
+          # Use globbing to find all your source files
+          python tools/parser/routes_parser.py \
+            --files $(find ./src -name "*.py" -o -name "*.js" -o -name "*.go") \
+            --output routes.json
+
+      - name: "Step 2: Parse Specs from Config"
+        run: |
+          python tools/parser/main_parser.py \
+            --compose docker-compose.yml \
+            --openapi $(find ./specs -name "*.yml" -o -name "*.json") \
+            --output system_spec.json
+
+      - name: "Step 3: Run HelioVerify Solver"
+        run: |
+          python tools/solver/main_solver.py \
+            --specs system_spec.json \
+            --routes routes.json
