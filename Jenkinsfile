@@ -5,6 +5,7 @@ pipeline {
         PYTHON_SCRIPTS_PATH = 'C:\\Users\\oi\\AppData\\Local\\Programs\\Python\\Python313\\Scripts'
         
         PATH = "${env.PYTHON_PATH};${env.PYTHON_SCRIPTS_PATH};${env.PATH}"
+        PYTHONIOENCODING = 'utf-8'
     }
 
     stages {
