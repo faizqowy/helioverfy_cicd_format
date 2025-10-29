@@ -1,0 +1,57 @@
+{
+    "services": {
+        "UserService": {
+            "port": null,
+            "file_path": "../user.js",
+            "framework": "Express.js",
+            "routes": [
+                {
+                    "name": "get_users",
+                    "method": "GET",
+                    "path": "/users",
+                    "middleware": [
+                        "authMiddleware"
+                    ],
+                    "handler": "(req, res) => {   res.json([{ id: 1, name: 'Test User' }]"
+                },
+                {
+                    "name": "post_users",
+                    "method": "POST",
+                    "path": "/users",
+                    "middleware": [
+                        "authMiddleware"
+                    ],
+                    "handler": "(req, res) => {   res.status(201).send('User created'"
+                },
+                {
+                    "name": "get_users_id",
+                    "method": "GET",
+                    "path": "/users/:id",
+                    "middleware": [
+                        "authMiddleware",
+                        "validateParams"
+                    ],
+                    "handler": "(req, res) => {   res.json({ id: req.params.id, name: 'Specific User' }"
+                }
+            ]
+        },
+        "AuthService": {
+            "port": null,
+            "file_path": "../auth.js",
+            "framework": "Express.js",
+            "routes": [
+                {
+                    "name": "post_auth_login",
+                    "method": "POST",
+                    "path": "/auth/login",
+                    "middleware": [],
+                    "handler": "(req, res) => {   res.json({ token: 'fake-jwt-token' }"
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "total_services": 2,
+        "total_routes": 4
+    }
+}

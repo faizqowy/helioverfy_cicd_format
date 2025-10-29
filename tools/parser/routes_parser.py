@@ -211,8 +211,7 @@ class FlaskParser:
 class ExpressParser:
     def __init__(self):
         self.route_patterns = [
-            # --- THIS LINE IS NOW FIXED ---
-            r'(?:(?:const|let|var)\s+\w+\s*=\s*)?(app|router)\.(get|post|put|delete|patch|options|head)\s*\(\s*([\'"`][^\'"`]*[\'"`])\s*,\s*([\s\S]*?)\)\s*;?'
+            r'(?:(?:const|let|var)\s+\w+\s*=\s*)?(app|router)\.(get|post|put|delete|patch|options|head)\s*\(\s*([\'"`][^\'"`]*[\'"`])\s*,\s*([\s\S]*?)\)\s*;'
         ]
         self.listen_patterns = [
             r'\.listen\s*\(\s*(\d+)\s*,',
@@ -455,7 +454,7 @@ def main():
     with open(args.output, 'w', encoding='utf-8') as f:
         json.dump(parsed_data, f, indent=4)
 
-    print(f" Parsed {parsed_data['metadata']['total_routes']} routes from {parsed_data['metadata']['total_services']} service(s).")
+    print(f"✅ Parsed {parsed_data['metadata']['total_routes']} routes from {parsed_data['metadata']['total_services']} service(s).")
     print(f"   Output saved to: {args.output}")
 
 
