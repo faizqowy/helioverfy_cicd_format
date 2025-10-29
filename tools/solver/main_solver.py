@@ -4,16 +4,9 @@ from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, field
 import argparse
 from pathlib import Path
-import re # NEW: Import regular expressions module
-
-# ==============================================================================
-#  1. HEURISTIC ANALYZERS
-#  These classes perform static analysis without the Z3 solver.
-# ==============================================================================
+import re 
 
 class MicroservicesAnalyzer:
-    """A facade for running various static analysis checks on microservice specifications."""
-
     def __init__(self):
         self.security_analyzer = SecurityAnalyzer()
         self.performance_analyzer = PerformanceAnalyzer()
@@ -30,11 +23,9 @@ class MicroservicesAnalyzer:
 
 
 class SecurityAnalyzer:
-    """Analyzes security best practices based on route definitions."""
-
     def analyze(self, routes_data: Dict) -> List[str]:
         vulnerabilities = []
-        # CHANGED: Access the flattened list of routes
+
         for route in routes_data.get('routes', []):
             if route['method'] in ['POST', 'PUT', 'DELETE'] and not self._has_auth_middleware(route):
                 vulnerabilities.append(f"Security Warning: Missing authentication on sensitive route {route['method']} {route['path']}")
@@ -54,8 +45,6 @@ class SecurityAnalyzer:
 
 
 class PerformanceAnalyzer:
-    """Analyzes for potential performance bottlenecks."""
-
     def analyze(self, specs_data: Dict) -> List[str]:
         bottlenecks = []
         sync_chains = self._find_synchronous_chains(specs_data)
@@ -90,13 +79,13 @@ class PerformanceAnalyzer:
     def build_dependency_graph(self, specs_data: Dict) -> Dict[str, List[str]]:
         graph = {}
         for comm in specs_data.get('communications', []):
-            if isinstance(comm, dict): # Handle new spec format for communications
+            if isinstance(comm, dict):
                 source = comm.get("source")
                 target = comm.get("target")
                 comm_type = comm.get("type")
                 if source and target and comm_type == 'sync':
                      graph.setdefault(source, []).append(target)
-            elif '->' in comm and 'sync' in comm.lower(): # Keep compatibility with old format
+            elif '->' in comm and 'sync' in comm.lower():
                 parts = comm.split('->')
                 if len(parts) == 2:
                     source = parts[0].strip().split()[0]
@@ -106,8 +95,6 @@ class PerformanceAnalyzer:
 
 
 class DependencyAnalyzer:
-    """Analyzes for circular dependencies in service communication."""
-
     def find_cycles(self, specs_data: Dict) -> List[str]:
         graph = self._build_dependency_graph(specs_data)
         cycles = self._detect_cycles(graph)
@@ -116,12 +103,12 @@ class DependencyAnalyzer:
     def _build_dependency_graph(self, specs_data: Dict) -> Dict[str, List[str]]:
         graph = {}
         for comm in specs_data.get('communications', []):
-            if isinstance(comm, dict): # Handle new spec format
+            if isinstance(comm, dict):
                 source = comm.get("source")
                 target = comm.get("target")
                 if source and target:
                     graph.setdefault(source, []).append(target)
-            elif '->' in comm: # Keep compatibility with old format
+            elif '->' in comm:
                 parts = comm.split('->')
                 if len(parts) == 2:
                     source = parts[0].strip().split()[0]
@@ -156,10 +143,6 @@ class DependencyAnalyzer:
                 seen.add(sorted_cycle)
         return unique_cycles
 
-# ==============================================================================
-#  2. Z3 SOLVER AND VERIFICATION LOGIC
-# ==============================================================================
-
 @dataclass
 class VerificationResult:
     is_sat: bool
@@ -170,8 +153,6 @@ class VerificationResult:
 
 
 class Z3MicroservicesSolver:
-    """Uses the Z3 SMT solver to verify microservice architecture against formal specifications."""
-
     def __init__(self):
         self.solver = Solver()
         self.route_vars = {}
@@ -180,14 +161,10 @@ class Z3MicroservicesSolver:
         self.routes_data = {}
         self.analyzer = MicroservicesAnalyzer()
 
-    # CHANGED: This parser now handles JSON specs and normalizes the route definitions.
     def parse_specs_file(self, specs_path: str) -> Dict[str, Any]:
-        """Parses a JSON-formatted .specs file and normalizes its structure."""
         with open(specs_path, 'r') as f:
             specs_data = json.load(f)
 
-        # Normalize the specs data into the internal format the tool expects.
-        # This makes the tool compatible with more intuitive JSON specs.
         internal_specs = {
             'services': {},
             'communications': specs_data.get('communications', []),
@@ -201,7 +178,6 @@ class Z3MicroservicesSolver:
                 method = route_details.get('method')
                 path = route_details.get('path')
                 if method and path:
-                    # The rest of the code expects a "METHOD /path" string, so we create it here.
                     internal_specs['services'][service_name]['routes'][route_name] = f"{method} {path}"
         return internal_specs
 
@@ -211,12 +187,8 @@ class Z3MicroservicesSolver:
             for route_name in service_data['routes']:
                 self.route_vars[f"{service_name}_{route_name}"] = Bool(f"{service_name}_{route_name}")
 
-    # NEW: Helper function to normalize path parameters for consistent comparison.
     def _normalize_path(self, path: str) -> str:
-        """Converts path parameters like {id} and :id to a standard format."""
-        # Replace Express-style ':param' with FastAPI-style '{param}'
         path = re.sub(r':(\w+)', r'{\1}', path)
-        # Remove trailing slashes for consistency (if path is not just "/")
         if path.endswith('/') and len(path) > 1:
             path = path[:-1]
         return path
@@ -231,7 +203,6 @@ class Z3MicroservicesSolver:
                 if len(parts) >= 2:
                     method, path = parts[0], parts[1]
                     
-                    # CHANGED: Use normalized paths for comparison
                     normalized_spec_path = self._normalize_path(path)
                     route_found = any(r['method'] == method and self._normalize_path(r['path']) == normalized_spec_path for r in defined_routes)
                     
@@ -255,7 +226,6 @@ class Z3MicroservicesSolver:
                         found_spec = True
                         method, path = route_spec_str.split()[:2]
                         
-                        # CHANGED: Use normalized paths to find the implementation
                         normalized_spec_path = self._normalize_path(path)
                         route_impl = next((r for r in defined_routes if r['method'] == method and self._normalize_path(r['path']) == normalized_spec_path), None)
                         
@@ -310,14 +280,12 @@ class Z3MicroservicesSolver:
 
     def verify(self, specs_path: str, routes_json_path: str) -> VerificationResult:
         try:
-            # CHANGED: The parser now handles JSON specs correctly.
             self.specs_data = self.parse_specs_file(specs_path)
             with open(routes_json_path, 'r') as f:
                 self.routes_data = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError) as e:
             return VerificationResult(is_sat=False, errors=[f"Failed to load input files: {e}"])
 
-        # NEW: Flatten the routes from the nested structure into the format the script expects.
         all_routes = []
         for service_info in self.routes_data.get('services', {}).values():
             all_routes.extend(service_info.get('routes', []))
@@ -345,10 +313,6 @@ class Z3MicroservicesSolver:
         verification_result.warnings.extend(self.analyzer.analyze_performance_bottlenecks(self.specs_data))
 
         return verification_result
-
-# ==============================================================================
-#  3. COMMAND-LINE INTERFACE
-# ==============================================================================
 
 def main():
     parser = argparse.ArgumentParser(
