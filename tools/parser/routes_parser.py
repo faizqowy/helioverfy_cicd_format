@@ -454,7 +454,7 @@ def main():
     with open(args.output, 'w', encoding='utf-8') as f:
         json.dump(parsed_data, f, indent=4)
 
-    print(f"✅ Parsed {parsed_data['metadata']['total_routes']} routes from {parsed_data['metadata']['total_services']} service(s).")
+    print(f" Parsed {parsed_data['metadata']['total_routes']} routes from {parsed_data['metadata']['total_services']} service(s).")
     print(f"   Output saved to: {args.output}")
 
 
