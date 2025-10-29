@@ -1,8 +1,8 @@
 {
     "services": {
-        "UserService": {
+        "UserserviceService": {
             "port": null,
-            "file_path": "../user.js",
+            "file_path": "../userservice.js",
             "framework": "Express.js",
             "routes": [
                 {
@@ -35,9 +35,9 @@
                 }
             ]
         },
-        "AuthService": {
+        "AuthserviceService": {
             "port": null,
-            "file_path": "../auth.js",
+            "file_path": "../authservice.js",
             "framework": "Express.js",
             "routes": [
                 {
