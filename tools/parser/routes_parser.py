@@ -211,7 +211,8 @@ class FlaskParser:
 class ExpressParser:
     def __init__(self):
         self.route_patterns = [
-            r'(?:(?:const|let|var)\s+\w+\s*=\s*)?(app|router)\.(get|post|put|delete|patch|options|head)\s*\(\s*([\'"`][^\'"`]*[\'"`])\s*,\s*([\s\S]*?)\)\s*;'
+            # --- THIS LINE IS NOW FIXED ---
+            r'(?:(?:const|let|var)\s+\w+\s*=\s*)?(app|router)\.(get|post|put|delete|patch|options|head)\s*\(\s*([\'"`][^\'"`]*[\'"`])\s*,\s*([\s\S]*?)\)\s*;?'
         ]
         self.listen_patterns = [
             r'\.listen\s*\(\s*(\d+)\s*,',
