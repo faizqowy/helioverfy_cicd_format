@@ -19,7 +19,7 @@ pipeline {
         // Stage 2: Run the Parsers
         stage('Parse Files') {
             steps {
-                bat 'python tools/parser/routes_parser.py --files routes.js --output routes.json'
+                bat 'python tools/parser/routes_parser.py --files user_services.js auth_service.js --output routes.json'
                 bat 'python tools/parser/main_parser.py --compose docker-compose.yaml --openapi openapi.yml --output system_spec.json'
             }
         }
