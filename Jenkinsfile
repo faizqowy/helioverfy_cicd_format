@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    environment {
+        PYTHON_PATH = 'C:\\Users\\oi\\AppData\\Local\\Programs\\Python\\Python313'
+        PYTHON_SCRIPTS_PATH = 'C:\\Users\\oi\\AppData\\Local\\Programs\\Python\\Python313\\Scripts'
+        
+        PATH = "${env.PYTHON_PATH};${env.PYTHON_SCRIPTS_PATH};${env.PATH}"
+    }
 
     stages {
         // Stage 1: Install Python dependencies
