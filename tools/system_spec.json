@@ -1,0 +1,44 @@
+{
+    "services": {
+        "UserserviceService": {
+            "routes": {
+                "getUsers": {
+                    "method": "GET",
+                    "path": "/users"
+                },
+                "createUser": {
+                    "method": "POST",
+                    "path": "/users"
+                },
+                "getUserById": {
+                    "method": "GET",
+                    "path": "/users/{id}"
+                }
+            }
+        },
+        "AuthserviceService": {
+            "routes": {
+                "loginUser": {
+                    "method": "POST",
+                    "path": "/auth/login"
+                }
+            }
+        }
+    },
+    "communications": [
+        {
+            "source": "auth-service",
+            "target": "user-service",
+            "type": "sync"
+        }
+    ],
+    "policies": {
+        "authRequired": [
+            "createUser",
+            "loginUser"
+        ]
+    },
+    "properties": [
+        "always (auth-service -> eventually user-service)"
+    ]
+}

@@ -1,38 +1,12 @@
 {
     "is_satisfiable": false,
     "errors": [
-        "Policy Violation: The route 'CollectionsService_post_collection_list_resource', which requires authentication, is not implemented."
+        "Policy Violation: Authentication is required for route 'AuthserviceService_loginUser' but is not implemented in its middleware."
     ],
     "warnings": [
-        "Security Warning: Missing authentication on sensitive route POST /register",
-        "Security Warning: Missing authentication on sensitive route POST /login",
-        "Security Warning: Missing authentication on sensitive route POST ",
+        "Security Warning: Missing authentication on sensitive route POST /auth/login",
         "Performance Warning: No global timeout policies defined, which could lead to hanging requests."
     ],
-    "suggestions": [
-        "Missing Implementation: Route 'get_collection_list_resource' (GET /api/collections) is defined in the spec for service 'CollectionsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'post_collection_list_resource' (POST /api/collections) is defined in the spec for service 'CollectionsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_collection_documents_resource' (GET /api/collections/{collection_id}) is defined in the spec for service 'CollectionsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'delete_collection_documents_resource' (DELETE /api/collections/{collection_id}) is defined in the spec for service 'CollectionsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'patch_collection_documents_resource' (PATCH /api/collections/{collection_id}) is defined in the spec for service 'CollectionsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_collection_statistics_resource' (GET /api/collections/{collection_id}/statistics) is defined in the spec for service 'CollectionsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'post_collection_document_resource' (POST /api/collections/{collection_id}/{document_id}) is defined in the spec for service 'CollectionsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'delete_collection_document_resource' (DELETE /api/collections/{collection_id}/{document_id}) is defined in the spec for service 'CollectionsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_documents_list_resource' (GET /api/documents) is defined in the spec for service 'DocumentsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'post_documents_list_resource' (POST /api/documents) is defined in the spec for service 'DocumentsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_document_contents_resource' (GET /api/documents/{document_id}) is defined in the spec for service 'DocumentsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'delete_document_contents_resource' (DELETE /api/documents/{document_id}) is defined in the spec for service 'DocumentsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_document_contents_huffman_encoded_resource' (GET /api/documents/{document_id}/huffman) is defined in the spec for service 'DocumentsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_document_statistics_resource' (GET /api/documents/{document_id}/statistics) is defined in the spec for service 'DocumentsService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_metrics_resource' (GET /api/system/metrics) is defined in the spec for service 'SystemService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_status_resource' (GET /api/system/status) is defined in the spec for service 'SystemService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_version_resource' (GET /api/system/version) is defined in the spec for service 'SystemService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'post_login_resource' (POST /api/users/login) is defined in the spec for service 'UsersService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'get_logout_resource' (GET /api/users/logout) is defined in the spec for service 'UsersService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'post_refresh_resource' (POST /api/users/refresh) is defined in the spec for service 'UsersService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'post_register_resource' (POST /api/users/register) is defined in the spec for service 'UsersService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'delete_user_resource' (DELETE /api/users/{user_id}) is defined in the spec for service 'UsersService' but is not found in routes.json. Consider implementing it.",
-        "Missing Implementation: Route 'patch_user_resource' (PATCH /api/users/{user_id}) is defined in the spec for service 'UsersService' but is not found in routes.json. Consider implementing it."
-    ],
+    "suggestions": [],
     "model": {}
 }
